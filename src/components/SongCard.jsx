@@ -3,6 +3,12 @@ import React from "react";
 export default class SongCard extends React.Component {
     constructor(props) {
         super(props);
+        /* all the props:
+            id: song-card-' + (index+1)
+            key: 'song-card-' + (index+1)
+            song: song
+            moveCallback= moveSongCallback
+        */
 
         this.state = {
             isDragging: false,
@@ -69,7 +75,7 @@ export default class SongCard extends React.Component {
         return (
             <div
                 id={'song-' + num}
-                className={itemClass}
+                className={'flex' + itemClass}
                 onDragStart={this.handleDragStart}
                 onDragOver={this.handleDragOver}
                 onDragEnter={this.handleDragEnter}
@@ -77,7 +83,10 @@ export default class SongCard extends React.Component {
                 onDrop={this.handleDrop}
                 draggable="true"
             >
-                {song.title} by {song.artist}
+                <>{num}. </>
+                <span className="song-card-by">{song.title}</span>
+                <span className="song-card-by">by</span>
+                <span className="song-card-artist">{song.artist}</span>
             </div>
         )
     }
