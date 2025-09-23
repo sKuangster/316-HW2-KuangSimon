@@ -85,6 +85,15 @@ body {
   background-color: var(--swatch-primary);
 }
 
+.toolbar-button{
+  font-size:36pt;
+  border-width: 1px;
+  border-color: black;
+  border-style: solid;
+  box-shadow: 2px 4px #888888;
+  border-radius: 5px;
+}
+
 #song-cards {
   grid-column: 2 / 3;
   grid-row: 3 / 4;
@@ -106,6 +115,14 @@ body {
 
 #add-playlist-button {
   float:left;
+  height: 85%;
+  font-size: 32pt;
+  color: black;
+  border-width: 1px;
+  border-color: black;
+  border-style: solid;
+  box-shadow: 2px 4px #888888;
+  border-radius: 5px;
 }
 
 .playlist-card, .selected-playlist-card, .unselected-playlist-card {
