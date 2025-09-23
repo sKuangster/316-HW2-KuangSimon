@@ -175,7 +175,7 @@ input {
 /* THIS STYLE SHEET MANAGES STYLE FOR OUR MODAL, i.e. DIALOG BOX */
 
 .modal {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
@@ -228,6 +228,10 @@ input {
   grid-template-rows: 33% 33% 33%;
   gap: 10px 20px;
   font-size: 48pt;
+}
+
+#verify-delete-list-root{
+  margin: 30px;
 }
 
 span {
