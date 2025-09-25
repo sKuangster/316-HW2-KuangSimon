@@ -4,14 +4,18 @@
         COLORS THAT WE'LL USE TOGETHER IN MULTIPLE PLACES THAT
         TOGETHER WILL MAKE UP A GIVEN THEME
     */
-  --swatch-foundation: #eeeedd; 
-  --swatch-primary: #e6e6e6; 
+  --swatch-foundation: #eeeedd;
+  --swatch-primary: #e6e6e6;
   --swatch-complement: #e1e4cb;
-  --swatch-contrast: #111111; 
-  --swatch-accent: #669966; 
+  --swatch-contrast: #111111;
+  --swatch-accent: #669966;
   --swatch-status: #123456;
+  --swatch-link-emphasis: #b88320;
+  --swatch-link-contrast: lightgreen;
+  --swatch-link-hover: pink;
+  --switch-link-active: magenta;
   --bounceEasing: cubic-bezier(0.51, 0.92, 0.24, 1.15);
-  font-family: Roboto, sans-serif;
+    font-family: Roboto, sans-serif;
 }
 
 body {
@@ -113,7 +117,7 @@ body {
   padding-top: 4px;
 }
 
-#add-playlist-button {
+#add-list-button {
   float:left;
   height: 85%;
   font-size: 32pt;
@@ -125,26 +129,19 @@ body {
   border-radius: 5px;
 }
 
-.playlist-card, .selected-playlist-card, .unselected-playlist-card {
-  font-size: 18pt;
-  margin: 10px;
-  padding: 20px;
-  border-radius: 25px;
+.selected-playlist-card {
+  background-color: var(--swatch-accent);
+  color: black;
+}
+
+.unselected-playlist-card {
+  background-color: var(--swatch-complement);
 }
 
 .unselected-playlist-card:hover {
   cursor: pointer;
   background-color: var(--swatch-contrast);
-  color:white;
-}
-
-.selected-playlist-card {
-  background-color: var(--swatch-accent);
-  color: white;
-}
-
-.unselected-playlist-card {
-  background-color: var(--swatch-complement);
+  color:var(--swatch-accent);
 }
 
 .card-button, .card-button-disabled {
@@ -153,6 +150,7 @@ body {
   float:right;
   color: black;
   cursor: pointer;
+  border-radius: 3pt;
 }
 
 .card-button:hover {
@@ -165,23 +163,48 @@ body {
   cursor: not-allowed;
 }
 
-.playlist-card, .selected-playlist-card, .unselected-playlist-card,
-.song-card, .selected-song-card, .unselected-song-card {
-  font-size: 24pt;
+.playlist-card, .selected-playlist-card, .unselected-playlist-card, .selected-song-card, .unselected-song-card {
+  font-size: 20px;
   margin: 10px;
   padding: 10px;
   border-radius: 125px;
+  align-items: center;
 }
 
 .song-card, .song-card-dragged-to { 
-  display:flex;
-  align-items: center;
   font-size: 24pt;
   margin: 10px;
-  padding: 10px;
+  padding: 20px;
   border-radius: 125px;
   height:20%;
   background-color: var(--swatch-complement);
+}
+
+.song-card:hover{
+  background: black;
+  color: var(--swatch-complement);
+}
+
+.song-card-index{
+  font-weight:lighter;
+}
+
+.song-card- {
+  color:white
+}
+
+.song-card-by {
+  color: black;
+  font-weight:lighter;
+}
+
+.song-card-year {
+  color: black;
+  font-weight: bolder;
+}
+
+.song-card-artist {
+  color: red;
 }
 
 input {
@@ -200,7 +223,6 @@ input {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--black);
   color: var(--swatch-text);
   cursor: pointer;
   visibility: hidden;

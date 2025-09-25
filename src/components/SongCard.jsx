@@ -15,67 +15,43 @@ export default class SongCard extends React.Component {
             draggedTo: false
         }
     }
-    handleDragStart = (event) => {
-        event.dataTransfer.setData("song", event.target.id);
-        this.setState(prevState => ({
-            isDragging: true,
-            draggedTo: prevState.draggedTo
-        }));
-    }
-    handleDragOver = (event) => {
-        event.preventDefault();
-        this.setState(prevState => ({
-            isDragging: prevState.isDragging,
-            draggedTo: true
-        }));
-    }
-    handleDragEnter = (event) => {
-        event.preventDefault();
-        this.setState(prevState => ({
-            isDragging: prevState.isDragging,
-            draggedTo: true
-        }));
-    }
-    handleDragLeave = (event) => {
-        event.preventDefault();
-        this.setState(prevState => ({
-            isDragging: prevState.isDragging,
-            draggedTo: false
-        }));
-    }
-    handleDrop = (event) => {
-        event.preventDefault();
-        let target = event.target;
-        let targetId = target.id;
-        targetId = targetId.substring(target.id.indexOf("-") + 1);
-        let sourceId = event.dataTransfer.getData("song");
-        sourceId = sourceId.substring(sourceId.indexOf("-") + 1);
-        
-        this.setState(prevState => ({
-            isDragging: false,
-            draggedTo: false
-        }));
-
-        // ASK THE MODEL TO MOVE THE DATA
-        this.props.moveCallback(sourceId, targetId);
-    }
-
+    
     getItemNum = () => {
         return this.props.id.substring("song-card-".length);
     }
 
+    handleDragStart = (e) => {
+    // Always take the wrapper’s id
+    const id = e.currentTarget.id;         // "song-card-5"
+    e.dataTransfer.setData("text/plain", id);
+    e.dataTransfer.effectAllowed = "move";
+    this.setState({ isDragging: true });
+    };
+
+    handleDragOver = (e) => { e.preventDefault(); this.setState({ draggedTo: true }); };
+    handleDragEnter = (e) => { e.preventDefault(); this.setState({ draggedTo: true }); };
+    handleDragLeave = (e) => { e.preventDefault(); this.setState({ draggedTo: false }); };
+
+    handleDrop = (e) => {
+        e.preventDefault();
+        const src = e.dataTransfer.getData("text/plain"); // "song-card-5"
+        const dst = e.currentTarget.id;                   // "song-card-2"
+        const srcIdx = parseInt(src.split("-").pop(), 10); // 1-based
+        const dstIdx = parseInt(dst.split("-").pop(), 10); // 1-based
+        this.setState({ isDragging: false, draggedTo: false });
+        this.props.moveCallback(srcIdx, dstIdx); // your MoveSong_Transaction will call app.moveSong
+    };
+
     render() {
         const { song } = this.props;
-        let num = this.getItemNum();
-        console.log("num: " + num);
+        const num = this.getItemNum();
         let itemClass = "song-card";
-        if (this.state.draggedTo) {
-            itemClass = "song-card-dragged-to";
-        }
+        console.log("num: " + num);
+        
         return (
             <div
                 id={'song-' + num}
-                className={'flex' + itemClass}
+                className={itemClass}
                 onDragStart={this.handleDragStart}
                 onDragOver={this.handleDragOver}
                 onDragEnter={this.handleDragEnter}
@@ -83,9 +59,15 @@ export default class SongCard extends React.Component {
                 onDrop={this.handleDrop}
                 draggable="true"
             >
-                <>{num}. </>
-                <span className="song-card-by">{song.title}</span>
-                <span className="song-card-by">by</span>
+                <span className="song-card-index">{num}. </span>
+                <a 
+                    href={`https://www.youtube.com/watch?v=${song.youTubeId}`} 
+                    target="1" 
+                    className="song-card-title">
+                        {song.title}
+                </a>{' '}
+                <span className="song-card-year">({song.year})</span>{' '}
+                <span className="song-card-by">by</span>{' '}
                 <span className="song-card-artist">{song.artist}</span>
             </div>
         )

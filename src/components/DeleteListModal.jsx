@@ -13,7 +13,7 @@ export default class DeleteListModal extends Component {
                 id="delete-list-modal" 
                 data-animation="slideInOutLeft">
                     <div className="modal-root" id='verify-delete-list-root'>
-                        <div class="modal-north">
+                        <div className="modal-north">
                             Delete playlist?
                         </div>
                         <div className="modal-center">
