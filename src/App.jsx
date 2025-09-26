@@ -362,6 +362,33 @@ class App extends React.Component {
         this.tps.processTransaction(tx);
     };
 
+    componentDidMount() {
+        window.addEventListener("keydown", this.handleGlobalKeydown);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("keydown", this.handleGlobalKeydown);
+    }
+
+    handleGlobalKeydown = (e) => {
+        const tag = e.target.tagName;
+        const typing = tag === "INPUT" || tag === "TEXTAREA" || e.target.isContentEditable;
+        if (typing || this.state.isEditOpen) return;
+
+        const ctrlKey = e.ctrlKey;
+
+        if (e.key.toLowerCase() === "z" && !e.shiftKey) {
+            e.preventDefault();
+                this.undo();
+            return;
+    }
+
+    if ((e.key.toLowerCase() === "y") || (e.key.toLowerCase() === "z" && e.shiftKey)) {
+        e.preventDefault();
+            this.redo();
+        }
+    };
+
     render() {
         let { currentList, isEditOpen, editIndex } = this.state;
         const songBeingEdited =
