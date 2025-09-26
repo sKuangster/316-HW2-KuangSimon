@@ -3,12 +3,6 @@ import React from "react";
 export default class SongCard extends React.Component {
     constructor(props) {
         super(props);
-        /* all the props:
-            id: song-card-' + (index+1)
-            key: 'song-card-' + (index+1)
-            song: song
-            moveCallback= moveSongCallback
-        */
 
         this.state = {
             isDragging: false,
@@ -43,12 +37,19 @@ export default class SongCard extends React.Component {
     };
 
     handleDoubleClick = (e) => {
-        console.log("Double clicked song card");
         e.preventDefault();
         const num = this.getItemNum(); // This is 1-based (song-card-1, song-card-2, etc.)
         const zeroBasedIndex = parseInt(num, 10) - 1; // Convert to 0-based index
         this.props.editCallback(zeroBasedIndex); // Pass 0-based index to editCallback
     };
+
+    handleDeleteSong = (e) => {
+        e.preventDefault();
+        const num = this.getItemNum(); // This is 1-based (song-card-1, song-card-2, etc.)
+        const zeroBasedIndex = parseInt(num, 10) - 1; // Convert to 0-based index
+        const { song, deleteSongCallback } = this.props
+        deleteSongCallback(zeroBasedIndex, song);
+    }
 
     render() {
         const { song } = this.props;
@@ -77,6 +78,7 @@ export default class SongCard extends React.Component {
                 <span className="song-card-year">({song.year})</span>{' '}
                 <span className="song-card-by">by</span>{' '}
                 <span className="song-card-artist">{song.artist}</span>
+                <input type="button" onClick={this.handleDeleteSong} class="song-card-button" value="🗑"></input>
             </div>
         )
     }

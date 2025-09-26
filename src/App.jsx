@@ -8,6 +8,7 @@ import { jsTPS } from 'jstps';
 // OUR TRANSACTIONS
 import MoveSong_Transaction from './transactions/MoveSong_Transaction.js';
 import EditSong_Transaction from './transactions/EditSong_Transaction.js';
+import RemoveSong_Transaction from './transactions/RemoveSong_Transaction.js';
 
 // THESE REACT COMPONENTS ARE MODALS
 import DeleteListModal from './components/DeleteListModal.jsx';
@@ -239,6 +240,13 @@ class App extends React.Component {
         let transaction = new MoveSong_Transaction(this, start, end);
         this.tps.processTransaction(transaction);
     }
+
+    // THIS FUNCTION ADDS A RemoveSong_Transaction TO THE TRANSACTION STACK
+    addRemoveSongTransaction = (index, song) => {
+        let transaction = new RemoveSong_Transaction(this, index, song);
+        this.tps.processTransaction(transaction);
+    }
+
     // THIS FUNCTION BEGINS THE PROCESS OF PERFORMING AN UNDO
     undo = () => {
         if (this.tps.hasTransactionToUndo()) {
@@ -301,6 +309,7 @@ class App extends React.Component {
         const oldSong = currentList.songs[editIndex];
         const tx = new EditSong_Transaction(this, editIndex, oldSong, updatedSong);
         this.tps.processTransaction(tx);
+
         this.setState({ isEditOpen: false, editIndex: null });
     };
 
@@ -337,6 +346,7 @@ class App extends React.Component {
                 <SongCards
                     currentList={currentList}
                     moveSongCallback={this.addMoveSongTransaction}
+                    deleteSongCallback={this.addRemoveSongTransaction}
                     openEditSong={this.openEditSong}
                 />
                 <Statusbar 
@@ -350,7 +360,7 @@ class App extends React.Component {
                 <EditSongModal
                     open={isEditOpen}
                     song={songBeingEdited}
-                    onConfirm={this.editSongAtIndex} // Fixed: removed extra parameter
+                    onConfirm={this.editSongAtIndex}
                     onCancel={this.hideEditSongModal}
                 />
             </>
