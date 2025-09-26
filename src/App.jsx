@@ -9,6 +9,7 @@ import { jsTPS } from 'jstps';
 import MoveSong_Transaction from './transactions/MoveSong_Transaction.js';
 import EditSong_Transaction from './transactions/EditSong_Transaction.js';
 import RemoveSong_Transaction from './transactions/RemoveSong_Transaction.js';
+import AddSong_Transaction from './transactions/AddSong_Transaction.js';
 
 // THESE REACT COMPONENTS ARE MODALS
 import DeleteListModal from './components/DeleteListModal.jsx';
@@ -389,6 +390,13 @@ class App extends React.Component {
         }
     };
 
+    addDefaultSong = () =>
+    {
+        const index = this.getPlaylistSize()
+        let transaction = new AddSong_Transaction(this, index);
+        this.tps.processTransaction(transaction);
+    }
+
     render() {
         let { currentList, isEditOpen, editIndex } = this.state;
         const songBeingEdited =
@@ -419,6 +427,7 @@ class App extends React.Component {
                     undoCallback={this.undo}
                     redoCallback={this.redo}
                     closeCallback={this.closeCurrentList}
+                    addSongCallback={this.addDefaultSong}
                 />
                 <SongCards
                     currentList={currentList}
