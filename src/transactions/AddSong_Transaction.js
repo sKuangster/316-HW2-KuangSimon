@@ -30,8 +30,8 @@ export default class AddSong_Transaction extends jsTPS_Transaction {
   executeUndo() {
     const currentList = { ...this.app.state.currentList };
     
-    // Remove the song at the specified index
-    currentList.songs = currentList.songs.filter((_, i) => i !== this.deleteindex);
+    // Remove the last song (the one we just added)
+    currentList.songs = currentList.songs.slice(0, -1);
     
     // Update the state and database
     this.app.setState({ currentList: currentList });
