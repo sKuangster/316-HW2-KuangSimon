@@ -21,6 +21,7 @@ export default class PlaylistCards extends React.Component {
                             loadListCallback={loadListCallback}
                             renameListCallback={renameListCallback}
                             copyListCallback={copyListCallback}
+                            onListNameEditChange={this.props.onListNameEditChange}
                         />
                     ))
                 }

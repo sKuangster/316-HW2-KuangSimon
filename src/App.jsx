@@ -46,6 +46,7 @@ class App extends React.Component {
             sessionData : loadedSessionData,
             isEditOpen: false,
             editIndex: null,
+            isListNameBeingChanged: false,
         }
     }
     
@@ -397,6 +398,10 @@ class App extends React.Component {
         this.tps.processTransaction(transaction);
     }
 
+    setListNameEditing = (isEditing) => {
+    this.setState({ isListNameBeingChanged: isEditing });
+    };
+
     render() {
         let { currentList, isEditOpen, editIndex } = this.state;
         const songBeingEdited =
@@ -405,11 +410,13 @@ class App extends React.Component {
         let canUndo = this.tps.hasTransactionToUndo();
         let canRedo = this.tps.hasTransactionToDo();
         let canClose = this.state.currentList !== null;
+        let canCreateList = currentList === null;
         return (
             <>
                 <Banner />
                 <SidebarHeading
                     createNewListCallback={this.createNewList}
+                    canCreateList={canCreateList}
                 />
                 <SidebarList
                     currentList={this.state.currentList}
@@ -418,6 +425,7 @@ class App extends React.Component {
                     loadListCallback={this.loadList}
                     renameListCallback={this.renameList}
                     copyListCallback={this.copyList}
+                    onListNameEditChange={this.setListNameEditing}
                 />
                 <EditToolbar
                     canAddSong={canAddSong}

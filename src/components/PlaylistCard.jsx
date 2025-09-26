@@ -36,17 +36,30 @@ export default class PlaylistCard extends React.Component {
     handleUpdate = (event) => {
         this.setState({ text: event.target.value });
     }
-    handleKeyPress = (event) => {
-        if (event.code === "Enter") {
-            this.handleBlur();
-        }
+
+    enableEdit = (event) => {
+    event.stopPropagation();
+    this.setState({ editActive: true, text: this.props.keyNamePair.name }, () => {
+        this.props.onListNameEditChange && this.props.onListNameEditChange(true);
+    });
+    };
+
+    finishEdit = () => {
+    const { key, name } = this.props.keyNamePair;
+    const newName = this.state.text.trim();
+    if (newName && newName !== name) {
+        this.props.renameListCallback(key, newName);
     }
-    handleBlur = () => {
-        let key = this.props.keyNamePair.key;
-        let textValue = this.state.text;
-        this.props.renameListCallback(key, textValue);
-        this.handleToggleEdit();
-    }
+    this.setState({ editActive: false }, () => {
+        this.props.onListNameEditChange && this.props.onListNameEditChange(false);
+    });
+    };
+
+    // hook finishEdit to both Enter and blur
+    handleKeyPress = (e) => {
+    if (e.key === "Enter") this.finishEdit();
+    };
+    handleBlur = () => this.finishEdit();
 
     handleCopyList = (e) =>
     {
@@ -56,7 +69,6 @@ export default class PlaylistCard extends React.Component {
 
     render() {
         const { keyNamePair, selected } = this.props;
-
         if (this.state.editActive) {
             return (
                 <input
