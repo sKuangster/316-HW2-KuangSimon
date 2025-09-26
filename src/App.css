@@ -207,6 +207,10 @@ body {
   color: red;
 }
 
+.song-card-delete-button{
+  float:right;
+}
+
 input {
   font-size:20pt;
 }

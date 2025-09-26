@@ -78,7 +78,7 @@ export default class SongCard extends React.Component {
                 <span className="song-card-year">({song.year})</span>{' '}
                 <span className="song-card-by">by</span>{' '}
                 <span className="song-card-artist">{song.artist}</span>
-                <input type="button" onClick={this.handleDeleteSong} class="song-card-button" value="🗑"></input>
+                <input type="button" onClick={this.handleDeleteSong} class="song-card-delete-button" value="🗑"></input>
             </div>
         )
     }
