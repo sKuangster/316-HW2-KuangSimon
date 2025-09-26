@@ -4,11 +4,20 @@ export default class EditSongModal extends Component {
   constructor(props) {
     super(props);
     this.state = this.deriveStateFromProps(props);
+    this.modalRef = React.createRef();
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.song !== this.props.song || prevProps.open !== this.props.open) {
       this.setState(this.deriveStateFromProps(this.props));
+    }
+    
+    // Trigger animation when modal opens
+    if (!prevProps.open && this.props.open && this.modalRef.current) {
+      // Force reflow to restart animation
+      this.modalRef.current.classList.remove('is-visible');
+      this.modalRef.current.offsetHeight; // Trigger reflow
+      this.modalRef.current.classList.add('is-visible');
     }
   }
 
@@ -33,11 +42,16 @@ export default class EditSongModal extends Component {
   };
 
   render() {
-    if (!this.state.open) return (<div></div>); // don't render when closed
-
+    const { open } = this.props;
     const { title, artist, year, youTubeId } = this.state;
+    
+    // Use the same visibility pattern as DeleteListModal
+    let modalClass = "modal";
+    if (open) {
+      modalClass += " is-visible";
+    }
     return (
-      <div id="edit-song-modal" className={"modal is-visible"} data-animation="slideInOutLeft">
+      <div id="edit-song-modal" className={modalClass} data-animation="slideInOutLeft">
         <div id="edit-song-root" className="modal-root">
           <div id="edit-song-modal-header" className="modal-north">Edit Song</div>
           <div id="edit-song-modal-content" className="modal-center">
