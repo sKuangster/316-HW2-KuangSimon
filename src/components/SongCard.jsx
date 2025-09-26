@@ -12,7 +12,7 @@ export default class SongCard extends React.Component {
 
         this.state = {
             isDragging: false,
-            draggedTo: false
+            draggedTo: false,
         }
     }
     
@@ -42,11 +42,18 @@ export default class SongCard extends React.Component {
         this.props.moveCallback(srcIdx, dstIdx); // your MoveSong_Transaction will call app.moveSong
     };
 
+    handleDoubleClick = (e) => {
+        console.log("Double clicked song card");
+        e.preventDefault();
+        const num = this.getItemNum(); // This is 1-based (song-card-1, song-card-2, etc.)
+        const zeroBasedIndex = parseInt(num, 10) - 1; // Convert to 0-based index
+        this.props.editCallback(zeroBasedIndex); // Pass 0-based index to editCallback
+    };
+
     render() {
         const { song } = this.props;
         const num = this.getItemNum();
         let itemClass = "song-card";
-        console.log("num: " + num);
         
         return (
             <div
@@ -57,6 +64,7 @@ export default class SongCard extends React.Component {
                 onDragEnter={this.handleDragEnter}
                 onDragLeave={this.handleDragLeave}
                 onDrop={this.handleDrop}
+                onDoubleClick={(e) => this.handleDoubleClick(e, num)}
                 draggable="true"
             >
                 <span className="song-card-index">{num}. </span>

@@ -7,6 +7,7 @@ import { jsTPS } from 'jstps';
 
 // OUR TRANSACTIONS
 import MoveSong_Transaction from './transactions/MoveSong_Transaction.js';
+import EditSong_Transaction from './transactions/EditSong_Transaction.js';
 
 // THESE REACT COMPONENTS ARE MODALS
 import DeleteListModal from './components/DeleteListModal.jsx';
@@ -18,6 +19,7 @@ import SidebarHeading from './components/SidebarHeading.jsx';
 import SidebarList from './components/PlaylistCards.jsx';
 import SongCards from './components/SongCards.jsx';
 import Statusbar from './components/Statusbar.jsx';
+import EditSongModal from './components/EditSongModal.jsx';
 
 class App extends React.Component {
     constructor(props) {
@@ -36,7 +38,9 @@ class App extends React.Component {
         this.state = {
             listKeyPairMarkedForDeletion : null,
             currentList : null,
-            sessionData : loadedSessionData
+            sessionData : loadedSessionData,
+            isEditOpen: false,
+            editIndex: null,
         }
     }
     sortKeyNamePairsByName = (keyNamePairs) => {
@@ -274,7 +278,36 @@ class App extends React.Component {
         let modal = document.getElementById("delete-list-modal");
         modal.classList.remove("is-visible");
     }
+
+    openEditSong = (index) => {
+        console.log("Opening edit song modal for index:", index);
+        this.setState({ isEditOpen: true, editIndex: index });
+    };
+    
+    // THIS FUNCTION IS FOR HIDING THE MODAL
+    hideEditSongModal = () => {
+        this.setState({ isEditOpen: false, editIndex: null });
+    };
+
+    editSongAtIndex = (updatedSong) => {
+        console.log("editSongAtIndex called with:", updatedSong);
+        const { currentList, editIndex } = this.state; // Fixed: proper state reference
+        
+        if (!currentList || editIndex === null) {
+            console.log("No current list or edit index");
+            return;
+        }
+        
+        const oldSong = currentList.songs[editIndex];
+        const tx = new EditSong_Transaction(this, editIndex, oldSong, updatedSong);
+        this.tps.processTransaction(tx);
+        this.setState({ isEditOpen: false, editIndex: null });
+    };
+
     render() {
+        const { currentList, isEditOpen, editIndex } = this.state;
+        const songBeingEdited =
+            currentList && editIndex != null ? currentList.songs[editIndex] : null;
         let canAddSong = this.state.currentList !== null;
         let canUndo = this.tps.hasTransactionToUndo();
         let canRedo = this.tps.hasTransactionToDo();
@@ -302,14 +335,23 @@ class App extends React.Component {
                     closeCallback={this.closeCurrentList}
                 />
                 <SongCards
-                    currentList={this.state.currentList}
-                    moveSongCallback={this.addMoveSongTransaction} />
+                    currentList={currentList}
+                    moveSongCallback={this.addMoveSongTransaction}
+                    openEditSong={this.openEditSong}
+                />
                 <Statusbar 
                     currentList={this.state.currentList} />
                 <DeleteListModal
                     listKeyPair={this.state.listKeyPairMarkedForDeletion}
                     hideDeleteListModalCallback={this.hideDeleteListModal}
                     deleteListCallback={this.deleteMarkedList}
+                />
+                
+                <EditSongModal
+                    open={isEditOpen}
+                    song={songBeingEdited}
+                    onConfirm={this.editSongAtIndex} // Fixed: removed extra parameter
+                    onCancel={this.hideEditSongModal}
                 />
             </>
         );
