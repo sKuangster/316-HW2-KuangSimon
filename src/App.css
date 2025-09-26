@@ -181,12 +181,12 @@ body {
   margin: 10px;
   padding: 20px;
   border-radius: 125px;
-  height: 80px;
-  min-height: 80px;
-  max-height: 80px;
+  height: 80px; /* Fixed height instead of percentage */
+  min-height: 80px; /* Ensure minimum height */
+  max-height: 80px; /* Prevent growing */
   background-color: var(--swatch-complement);
-  flex-shrink: 0;
-  box-sizing: border-box;
+  flex-shrink: 0; /* Prevent shrinking when flex container adjusts */
+  box-sizing: border-box; /* Include padding and border in height calculation */
 }
 
 .song-card:hover{
@@ -198,8 +198,30 @@ body {
   font-weight:lighter;
 }
 
-.song-card- {
-  color:white
+.song-card-title {
+  color: var(--swatch-link-emphasis);
+  text-decoration: none;
+}
+
+.song-card-title:visited {
+  color: var(--swatch-link-emphasis);
+}
+
+.song-card-title:hover {
+  color: var(--swatch-link-contrast);
+  text-decoration: none;
+}
+
+.song-card-title:active {
+  color: var(--switch-link-active);
+}
+
+.song-card:hover .song-card-title {
+  color: var(--swatch-link-contrast);
+}
+
+.song-card:hover .song-card-title:hover {
+  color: black;
 }
 
 .song-card-by {
@@ -223,7 +245,6 @@ body {
 .song-card-duplicate-button{
   float:right;
 }
-
 
 input {
   font-size:20pt;
