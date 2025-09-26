@@ -9,14 +9,14 @@ export default class DeleteListModal extends Component {
         }
         return (
             <div 
-                className="modal" 
-                id="delete-list-modal" 
+                className="modal"
+                id="delete-list-modal"
                 data-animation="slideInOutLeft">
                     <div className="modal-root" id='verify-delete-list-root'>
                         <div className="modal-north">
                             Delete playlist?
                         </div>
-                        <div className="modal-center">
+                        <div id="modal-delete-center">
                             <div className="modal-center-content">
                                 Are you sure you wish to permanently delete the <span id="delete-list-span">{name}</span> playlist?
                             </div>

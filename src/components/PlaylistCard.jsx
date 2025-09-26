@@ -49,7 +49,14 @@ export default class PlaylistCard extends React.Component {
         this.handleToggleEdit();
     }
 
+    handleCopyList = (e) =>
+    {
+        e.stopPropagation()
+        this.props.copyListCallback(this.props.keyNamePair);
+    }
+
     render() {
+        console.log(this.props.keyNamePair)
         const { keyNamePair, selected } = this.props;
 
         if (this.state.editActive) {
@@ -88,6 +95,12 @@ export default class PlaylistCard extends React.Component {
                         className="card-button"
                         onClick={this.handleDeleteList}
                         value={"🗑"} />
+                    <input
+                        type="button"
+                        id={"copy-list-" + keyNamePair.key}
+                        className="card-button"
+                        onClick={this.handleCopyList}
+                        value={"⎘"} />
                 </div>
             );
         }

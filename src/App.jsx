@@ -247,6 +247,45 @@ class App extends React.Component {
         this.tps.processTransaction(transaction);
     }
 
+    copyList = (keyNamePair) => {
+        console.log("copyList")
+        const key = keyNamePair.key
+        const name = keyNamePair.name
+        let newKey = this.state.sessionData.nextKey;
+        let playlisterListToBeCopied = this.db.queryGetList(key);
+        let songs = playlisterListToBeCopied.songs
+        let newSongs = songs.slice()
+        let newName =  name + " (Copy)";
+        
+        let newList = {
+            key: String(newKey),
+            name: newName,
+            songs: newSongs
+        };
+
+        let newKeyNamePair = { "key": newKey, "name": newName };
+        let updatedPairs = [...this.state.sessionData.keyNamePairs, newKeyNamePair];
+        this.sortKeyNamePairsByName(updatedPairs);
+
+        this.setState(prevState => ({
+            listKeyPairMarkedForDeletion : prevState.listKeyPairMarkedForDeletion,
+            currentList: newList,
+            sessionData: {
+                nextKey: prevState.sessionData.nextKey + 1,
+                counter: prevState.sessionData.counter + 1,
+                keyNamePairs: updatedPairs
+            }
+        }), () => {
+            // PUTTING THIS NEW LIST IN PERMANENT STORAGE
+            // IS AN AFTER EFFECT
+
+            this.db.mutationCreateList(newList);
+            // SO IS STORING OUR SESSION DATA
+            this.db.mutationUpdateSessionData(this.state.sessionData);
+            this.loadList(String(newKey))
+        });
+    }
+
     // THIS FUNCTION BEGINS THE PROCESS OF PERFORMING AN UNDO
     undo = () => {
         if (this.tps.hasTransactionToUndo()) {
@@ -314,7 +353,7 @@ class App extends React.Component {
     };
 
     render() {
-        const { currentList, isEditOpen, editIndex } = this.state;
+        let { currentList, isEditOpen, editIndex } = this.state;
         const songBeingEdited =
             currentList && editIndex != null ? currentList.songs[editIndex] : null;
         let canAddSong = this.state.currentList !== null;
@@ -333,6 +372,7 @@ class App extends React.Component {
                     deleteListCallback={this.markListForDeletion}
                     loadListCallback={this.loadList}
                     renameListCallback={this.renameList}
+                    copyListCallback={this.copyList}
                 />
                 <EditToolbar
                     canAddSong={canAddSong}

@@ -37,6 +37,7 @@ export default class SongCard extends React.Component {
     };
 
     handleDoubleClick = (e) => {
+        event.stopPropagation()
         e.preventDefault();
         const num = this.getItemNum(); // This is 1-based (song-card-1, song-card-2, etc.)
         const zeroBasedIndex = parseInt(num, 10) - 1; // Convert to 0-based index
@@ -44,6 +45,7 @@ export default class SongCard extends React.Component {
     };
 
     handleDeleteSong = (e) => {
+        e.stopPropagation()
         e.preventDefault();
         const num = this.getItemNum(); // This is 1-based (song-card-1, song-card-2, etc.)
         const zeroBasedIndex = parseInt(num, 10) - 1; // Convert to 0-based index
@@ -78,7 +80,7 @@ export default class SongCard extends React.Component {
                 <span className="song-card-year">({song.year})</span>{' '}
                 <span className="song-card-by">by</span>{' '}
                 <span className="song-card-artist">{song.artist}</span>
-                <input type="button" onClick={this.handleDeleteSong} class="song-card-delete-button" value="🗑"></input>
+                <input type="button" onClick={this.handleDeleteSong} className="song-card-delete-button" value="🗑"></input>
             </div>
         )
     }
