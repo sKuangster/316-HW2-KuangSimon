@@ -44,7 +44,6 @@ export default class PlaylistCard extends React.Component {
     handleBlur = () => {
         let key = this.props.keyNamePair.key;
         let textValue = this.state.text;
-        console.log("PlaylistCard handleBlur: " + textValue);
         this.props.renameListCallback(key, textValue);
         this.handleToggleEdit();
     }
@@ -56,7 +55,6 @@ export default class PlaylistCard extends React.Component {
     }
 
     render() {
-        console.log(this.props.keyNamePair)
         const { keyNamePair, selected } = this.props;
 
         if (this.state.editActive) {

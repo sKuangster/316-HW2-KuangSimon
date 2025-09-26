@@ -21,6 +21,7 @@ import SidebarList from './components/PlaylistCards.jsx';
 import SongCards from './components/SongCards.jsx';
 import Statusbar from './components/Statusbar.jsx';
 import EditSongModal from './components/EditSongModal.jsx';
+import DuplicateSong_Transaction from './transactions/DuplicateSong_Transaction.js';
 
 class App extends React.Component {
     constructor(props) {
@@ -356,6 +357,11 @@ class App extends React.Component {
         this.setState({ isEditOpen: false, editIndex: null });
     };
 
+    duplicateSongTransaction = (index, song) => {
+        const tx = new DuplicateSong_Transaction(this, index, { ...song }); // shallow clone to avoid shared refs
+        this.tps.processTransaction(tx);
+    };
+
     render() {
         let { currentList, isEditOpen, editIndex } = this.state;
         const songBeingEdited =
@@ -392,6 +398,7 @@ class App extends React.Component {
                     moveSongCallback={this.addMoveSongTransaction}
                     deleteSongCallback={this.addRemoveSongTransaction}
                     openEditSong={this.openEditSong}
+                    duplicateSongCallBack={this.duplicateSongTransaction}
                 />
                 <Statusbar 
                     currentList={this.state.currentList} />

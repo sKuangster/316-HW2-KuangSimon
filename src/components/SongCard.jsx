@@ -37,7 +37,7 @@ export default class SongCard extends React.Component {
     };
 
     handleDoubleClick = (e) => {
-        event.stopPropagation()
+        e.stopPropagation()
         e.preventDefault();
         const num = this.getItemNum(); // This is 1-based (song-card-1, song-card-2, etc.)
         const zeroBasedIndex = parseInt(num, 10) - 1; // Convert to 0-based index
@@ -51,6 +51,14 @@ export default class SongCard extends React.Component {
         const zeroBasedIndex = parseInt(num, 10) - 1; // Convert to 0-based index
         const { song, deleteSongCallback } = this.props
         deleteSongCallback(zeroBasedIndex, song);
+    }
+
+    handleDuplicateSong = (e) => {
+        e.stopPropagation()
+        e.preventDefault();
+        const num = this.getItemNum(); // This is 1-based (song-card-1, song-card-2, etc.)
+        const zeroBasedIndex = parseInt(num, 10) - 1; // Convert to 0-based index
+        this.props.duplicateSongCallBack(zeroBasedIndex, this.props.song);
     }
 
     render() {
@@ -80,7 +88,9 @@ export default class SongCard extends React.Component {
                 <span className="song-card-year">({song.year})</span>{' '}
                 <span className="song-card-by">by</span>{' '}
                 <span className="song-card-artist">{song.artist}</span>
+
                 <input type="button" onClick={this.handleDeleteSong} className="song-card-delete-button" value="🗑"></input>
+                <input type="button" onClick={this.handleDuplicateSong} className="song-card-delete-button" value="⎘"></input>
             </div>
         )
     }
