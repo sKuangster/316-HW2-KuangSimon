@@ -7,7 +7,6 @@ export default class SongCards extends React.Component {
         if 
             (!currentList) return <div id="song-cards" />
         else {
-            console.log(currentList.songs)
             return (
                 <div id="song-cards">
                     {currentList.songs.map((song, index) => (

@@ -211,6 +211,11 @@ body {
   float:right;
 }
 
+.song-card-duplicate-button{
+  float:right;
+}
+
+
 input {
   font-size:20pt;
 }

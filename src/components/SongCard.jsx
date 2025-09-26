@@ -89,8 +89,42 @@ export default class SongCard extends React.Component {
                 <span className="song-card-by">by</span>{' '}
                 <span className="song-card-artist">{song.artist}</span>
 
-                <input type="button" onClick={this.handleDeleteSong} className="song-card-delete-button" value="🗑"></input>
-                <input type="button" onClick={this.handleDuplicateSong} className="song-card-delete-button" value="⎘"></input>
+                <input
+                    value="🗑"
+                    type="button"
+                    className="song-card-delete-button"
+                    draggable={false}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const idx = parseInt(this.props.id.split("-").pop(), 10) - 1;
+                        this.props.deleteSongCallback(idx, this.props.song);
+                    }}
+                    onDoubleClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }}
+                    aria-label="Delete song"
+                    />
+                
+                
+                <input
+                    value={"⎘"}
+                    type="button"
+                    className="song-card-duplicate-button"
+                    draggable={false}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const idx = parseInt(this.props.id.split("-").pop(), 10) - 1;
+                        this.props.duplicateSongCallBack(idx, this.props.song);
+                    }}
+                    onDoubleClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }}
+                    aria-label="Duplicate song"
+                    />
             </div>
         )
     }
