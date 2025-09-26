@@ -32,8 +32,10 @@ class App extends React.Component {
         // THIS WILL TALK TO LOCAL STORAGE
         this.db = new DBManager();
 
-        // GET THE SESSION DATA FROM OUR DATA MANAGER
         let loadedSessionData = this.db.queryGetSessionData();
+        if (loadedSessionData && loadedSessionData.keyNamePairs) {
+        this.sortKeyNamePairsByName(loadedSessionData.keyNamePairs); // sorts in place
+        }
 
         // SETUP THE INITIAL STATE
         this.state = {
@@ -44,12 +46,14 @@ class App extends React.Component {
             editIndex: null,
         }
     }
+    
     sortKeyNamePairsByName = (keyNamePairs) => {
         keyNamePairs.sort((keyPair1, keyPair2) => {
             // GET THE LISTS
             return keyPair1.name.localeCompare(keyPair2.name);
         });
     }
+
     // THIS FUNCTION BEGINS THE PROCESS OF CREATING A NEW LIST
     createNewList = () => {
         // FIRST FIGURE OUT WHAT THE NEW LIST'S KEY AND NAME WILL BE
